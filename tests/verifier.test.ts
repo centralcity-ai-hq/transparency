@@ -201,7 +201,7 @@ test('fetchLog reads the public routes (paged leaves) and reports an unpublished
   const fetched = await fetchLog('https://example.com', fake);
   assert.equal(fetched.leaves.length, 7);
   assert.equal((await verifyLog(fetched)).ok, true);
-  assert.ok(seen.includes('/api/public/count-log/leaves?from=0&to=7'));
+  assert.ok(seen.includes('/api/public/count-log/leaves?from=0&to=10000'));
   const missing = (async () => new Response('{}', { status: 404 })) as unknown as typeof fetch;
   await assert.rejects(fetchLog('https://example.com', missing), NotPublished);
   await assert.rejects(fetchLog('http://example.com', fake), /https/);
@@ -378,6 +378,8 @@ test('the witnessed agent-count files form a valid withheld v1 chain', async () 
     const content = readFileSync(new URL(name, folder), 'utf8');
     const witnessed = JSON.parse(content) as Record<string, unknown>;
     assert.ok(!('subcounts' in witnessed), name);
+    // Later days are v2 checkpoints, published and witnessed in full.
+    if (witnessed.v !== 1) continue;
     // The form the service publishes for that day now.
     const live = {
       v: 1,

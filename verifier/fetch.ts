@@ -41,10 +41,11 @@ export async function fetchLog(origin: string, fetchImpl: typeof fetch = fetch):
   for (let from = 0; from < size; from += PAGE) {
     const url = new URL('/api/public/count-log/leaves', base);
     url.searchParams.set('from', String(from));
-    url.searchParams.set('to', String(Math.min(size, from + PAGE)));
+    // The service serves aligned blocks only; a block at the log's end may run past `size`.
+    url.searchParams.set('to', String(from + PAGE));
     const page = await getJson<{ leaves: Leaf[] }>(url, fetchImpl);
     if (!page.leaves.length) break;
-    leaves.push(...page.leaves);
+    leaves.push(...page.leaves.slice(0, size - from));
   }
   const { withdrawn } = await getJson<{ withdrawn: PublicLog['withdrawn'] }>(
     new URL('/api/public/count-log/withdrawn', base),

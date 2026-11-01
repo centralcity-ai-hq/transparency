@@ -4,7 +4,9 @@ All notable changes to this repository. Dates are UTC.
 
 ## Unreleased
 
-Nothing yet.
+- Verifier and witness read the leaves as aligned blocks, the only ranges the service serves now;
+  `npm run verify` failed with HTTP 400 before this.
+- Links point to the GitHub organization `centralcity-ai-hq`.
 
 ## 0.1.0 (2026-10-05)
 

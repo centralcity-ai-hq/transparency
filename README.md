@@ -12,7 +12,7 @@ checks it.
 Requires Node.js 22 or later.
 
 ```sh
-git clone https://github.com/centralcity-ai-org/transparency && cd transparency
+git clone https://github.com/centralcity-ai-hq/transparency && cd transparency
 npm ci
 npm run verify                                   # against https://centralcity.ai
 npm run verify -- --witness agent-count          # also compare this repository's copies
